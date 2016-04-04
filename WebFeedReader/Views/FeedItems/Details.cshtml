@@ -1,0 +1,21 @@
+﻿@model WebFeedReader.Models.FeedItem
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h3>@Model.Title</h3>
+    <p>@Model.Feed.Title</p>
+
+    <hr />
+
+    <div>@Html.Raw(@Model.Content)</div>
+
+    <hr />
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

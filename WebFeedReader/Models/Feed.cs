@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using static WebFeedReader.Utils.FeedUtils;
 
 namespace WebFeedReader.Models
 {
@@ -19,5 +20,15 @@ namespace WebFeedReader.Models
         public string Url { get; set; }
 
         public virtual List<FeedItem> FeedItems { get; set; }
+
+        public Feed()
+        {
+            FeedItems = new List<FeedItem>();
+        }
+
+        public static Feed CreateFeed(string feedUrl)
+        {
+            return CreateFeedFromFeedData(LoadFeedDataFromUrl(feedUrl));
+        }
     }
 }

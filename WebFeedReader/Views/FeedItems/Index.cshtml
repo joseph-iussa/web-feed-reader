@@ -1,0 +1,35 @@
+﻿@model IEnumerable<WebFeedReader.Models.FeedItem>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Feed)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var feedItem in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(_ => feedItem.Feed.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(_ => feedItem.Title)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "Details", new { id = feedItem.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = feedItem.ID })
+            </td>
+        </tr>
+    }
+</table>
