@@ -7,17 +7,20 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebFeedReader.Models;
+using WebFeedReader.Persistence;
 
 namespace WebFeedReader.Controllers
 {
     public class FeedItemsController : Controller
     {
-        private Context db = new Context();
+        private IPersistenceService persistenceService = new PersistenceService(new PersistenceContext());
+        private PersistenceContext pc = new PersistenceContext();
 
         // GET: FeedItems
         public ActionResult Index()
         {
-            return View(db.FeedItems.ToList());
+            //return View(pc.FeedItems.AsEnumerable());
+            return View(persistenceService.getAllFeedItems());
         }
 
         // GET: FeedItems/Details/5
@@ -27,7 +30,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FeedItem feedItem = db.FeedItems.Find(id);
+            FeedItem feedItem = persistenceService.findFeedItemById((long)id);
             if (feedItem == null)
             {
                 return HttpNotFound();
@@ -42,7 +45,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FeedItem feedItem = db.FeedItems.Find(id);
+            FeedItem feedItem = persistenceService.findFeedItemById((long)id);
             if (feedItem == null)
             {
                 return HttpNotFound();
@@ -55,9 +58,8 @@ namespace WebFeedReader.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            FeedItem feedItem = db.FeedItems.Find(id);
-            db.FeedItems.Remove(feedItem);
-            db.SaveChanges();
+            persistenceService.deleteFeedItemById(id);
+            persistenceService.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -65,7 +67,7 @@ namespace WebFeedReader.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                persistenceService.Dispose();
             }
             base.Dispose(disposing);
         }

@@ -8,6 +8,7 @@ using System.ServiceModel.Syndication;
 using System.Web;
 using System.Web.Mvc;
 using WebFeedReader.Models;
+using WebFeedReader.Persistence;
 using WebFeedReader.Utils;
 using WebFeedReader.ViewModels;
 
@@ -15,12 +16,12 @@ namespace WebFeedReader.Controllers
 {
     public class FeedsController : Controller
     {
-        private Context db = new Context();
+        private IPersistenceService persistenceService = new PersistenceService(new PersistenceContext());
 
         // GET: Feeds
         public ActionResult Index()
         {
-            return View(db.Feeds.ToList());
+            return View(persistenceService.getAllFeeds());
         }
 
         // GET: Feeds/Details/5
@@ -30,7 +31,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feed feed = db.Feeds.Find(id);
+            Feed feed = persistenceService.findFeedById((long)id);
             if (feed == null)
             {
                 return HttpNotFound();
@@ -61,8 +62,8 @@ namespace WebFeedReader.Controllers
                 return View(feedViewModel);
             }
 
-            db.Feeds.Add(newFeed);
-            db.SaveChanges();
+            persistenceService.addFeed(newFeed);
+            persistenceService.SaveChanges();
 
             return RedirectToAction("Index");
         }
@@ -74,7 +75,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feed feed = db.Feeds.Find(id);
+            Feed feed = persistenceService.findFeedById((long)id);
             if (feed == null)
             {
                 return HttpNotFound();
@@ -90,8 +91,8 @@ namespace WebFeedReader.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(feed).State = EntityState.Modified;
-                db.SaveChanges();
+                persistenceService.modifyFeed(feed);
+                persistenceService.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(feed);
@@ -104,7 +105,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feed feed = db.Feeds.Find(id);
+            Feed feed = persistenceService.findFeedById((long)id);
             if (feed == null)
             {
                 return HttpNotFound();
@@ -117,9 +118,8 @@ namespace WebFeedReader.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            Feed feed = db.Feeds.Find(id);
-            db.Feeds.Remove(feed);
-            db.SaveChanges();
+            persistenceService.deleteFeedById(id);
+            persistenceService.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -127,7 +127,7 @@ namespace WebFeedReader.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                persistenceService.Dispose();
             }
             base.Dispose(disposing);
         }
