@@ -14,12 +14,10 @@ namespace WebFeedReader.Controllers
     public class FeedItemsController : Controller
     {
         private IPersistenceService persistenceService = new PersistenceService(new PersistenceContext());
-        private PersistenceContext pc = new PersistenceContext();
 
         // GET: FeedItems
         public ActionResult Index()
         {
-            //return View(pc.FeedItems.AsEnumerable());
             return View(persistenceService.getAllFeedItems());
         }
 
