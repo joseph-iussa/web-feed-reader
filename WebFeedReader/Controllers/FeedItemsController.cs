@@ -13,7 +13,12 @@ namespace WebFeedReader.Controllers
 {
     public class FeedItemsController : Controller
     {
-        private IPersistenceService persistenceService = new PersistenceService(new PersistenceContext());
+        private IPersistenceService persistenceService;
+
+        public FeedItemsController(IPersistenceService persistenceService)
+        {
+            this.persistenceService = persistenceService;
+        }
 
         // GET: FeedItems
         public ActionResult Index()

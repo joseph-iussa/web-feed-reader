@@ -7,7 +7,7 @@ using WebFeedReader.Models;
 
 namespace WebFeedReader.Persistence
 {
-    interface IPersistenceService : IDisposable
+    public interface IPersistenceService : IDisposable
     {
         IEnumerable<Feed> getAllFeeds();
 
