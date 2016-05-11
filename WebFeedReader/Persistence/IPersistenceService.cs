@@ -9,27 +9,27 @@ namespace WebFeedReader.Persistence
 {
     public interface IPersistenceService : IDisposable
     {
-        IEnumerable<Feed> getAllFeeds();
+        IEnumerable<Feed> GetAllFeeds();
 
-        IEnumerable<FeedItem> getAllFeedItems();
+        IEnumerable<FeedItem> GetAllFeedItems();
 
-        Feed findFeedById(long id);
+        Feed FindFeedById(long id);
 
-        FeedItem findFeedItemById(long id);
+        FeedItem FindFeedItemById(long id);
 
-        Feed addFeed(Feed feed);
+        Feed AddFeed(Feed feed);
 
-        Feed modifyFeed(Feed feed);
+        Feed ModifyFeed(Feed feed);
 
-        Feed deleteFeed(Feed feed);
+        Feed DeleteFeed(Feed feed);
 
-        Feed deleteFeedById(long id);
+        Feed DeleteFeedById(long id);
 
-        FeedItem addFeedItem(FeedItem feedItem);
+        FeedItem AddFeedItem(FeedItem feedItem);
 
-        FeedItem deleteFeedItem(FeedItem feedItem);
+        FeedItem DeleteFeedItem(FeedItem feedItem);
 
-        FeedItem deleteFeedItemById(long id);
+        FeedItem DeleteFeedItemById(long id);
 
         int SaveChanges();
     }

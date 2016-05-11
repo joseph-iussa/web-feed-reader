@@ -26,7 +26,7 @@ namespace WebFeedReader.Controllers
         // GET: Feeds
         public ActionResult Index()
         {
-            return View(persistenceService.getAllFeeds());
+            return View(persistenceService.GetAllFeeds());
         }
 
         // GET: Feeds/Details/5
@@ -36,7 +36,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feed feed = persistenceService.findFeedById((long)id);
+            Feed feed = persistenceService.FindFeedById((long)id);
             if (feed == null)
             {
                 return HttpNotFound();
@@ -67,7 +67,7 @@ namespace WebFeedReader.Controllers
                 return View(feedViewModel);
             }
 
-            persistenceService.addFeed(newFeed);
+            persistenceService.AddFeed(newFeed);
             persistenceService.SaveChanges();
 
             return RedirectToAction("Index");
@@ -80,7 +80,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feed feed = persistenceService.findFeedById((long)id);
+            Feed feed = persistenceService.FindFeedById((long)id);
             if (feed == null)
             {
                 return HttpNotFound();
@@ -96,7 +96,7 @@ namespace WebFeedReader.Controllers
         {
             if (ModelState.IsValid)
             {
-                persistenceService.modifyFeed(feed);
+                persistenceService.ModifyFeed(feed);
                 persistenceService.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -110,7 +110,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feed feed = persistenceService.findFeedById((long)id);
+            Feed feed = persistenceService.FindFeedById((long)id);
             if (feed == null)
             {
                 return HttpNotFound();
@@ -123,7 +123,7 @@ namespace WebFeedReader.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            persistenceService.deleteFeedById(id);
+            persistenceService.DeleteFeedById(id);
             persistenceService.SaveChanges();
             return RedirectToAction("Index");
         }

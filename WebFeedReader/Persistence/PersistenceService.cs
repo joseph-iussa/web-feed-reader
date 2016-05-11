@@ -16,66 +16,66 @@ namespace WebFeedReader.Persistence
             this.context = context;
         }
 
-        public IEnumerable<Feed> getAllFeeds()
+        public IEnumerable<Feed> GetAllFeeds()
         {
             return context.Feeds.AsEnumerable();
         }
 
-        public IEnumerable<FeedItem> getAllFeedItems()
+        public IEnumerable<FeedItem> GetAllFeedItems()
         {
             return context.FeedItems.Include(feedItem => feedItem.Feed).AsEnumerable();
         }
 
-        public Feed findFeedById(long id)
+        public Feed FindFeedById(long id)
         {
             return context.Feeds.Find(id);
         }
 
-        public FeedItem findFeedItemById(long id)
+        public FeedItem FindFeedItemById(long id)
         {
             return context.FeedItems.Find(id);
         }
 
-        public Feed addFeed(Feed feed)
+        public Feed AddFeed(Feed feed)
         {
             context.Feeds.Add(feed);
             return feed;
         }
 
-        public FeedItem addFeedItem(FeedItem feedItem)
+        public FeedItem AddFeedItem(FeedItem feedItem)
         {
             context.FeedItems.Add(feedItem);
             return feedItem;
         }
 
-        public Feed modifyFeed(Feed feed)
+        public Feed ModifyFeed(Feed feed)
         {
             context.Entry(feed).State = EntityState.Modified;
             return feed;
         }
 
-        public Feed deleteFeed(Feed feed)
+        public Feed DeleteFeed(Feed feed)
         {
             context.Feeds.Remove(feed);
             return feed;
         }
 
-        public Feed deleteFeedById(long id)
+        public Feed DeleteFeedById(long id)
         {
-            Feed feed = findFeedById(id);
-            return deleteFeed(feed);
+            Feed feed = FindFeedById(id);
+            return DeleteFeed(feed);
         }
 
-        public FeedItem deleteFeedItem(FeedItem feedItem)
+        public FeedItem DeleteFeedItem(FeedItem feedItem)
         {
             context.FeedItems.Remove(feedItem);
             return feedItem;
         }
 
-        public FeedItem deleteFeedItemById(long id)
+        public FeedItem DeleteFeedItemById(long id)
         {
-            FeedItem feedItem = findFeedItemById(id);
-            return deleteFeedItem(feedItem);
+            FeedItem feedItem = FindFeedItemById(id);
+            return DeleteFeedItem(feedItem);
         }
 
         public int SaveChanges()

@@ -23,7 +23,7 @@ namespace WebFeedReader.Controllers
         // GET: FeedItems
         public ActionResult Index()
         {
-            return View(persistenceService.getAllFeedItems());
+            return View(persistenceService.GetAllFeedItems());
         }
 
         // GET: FeedItems/Details/5
@@ -33,7 +33,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FeedItem feedItem = persistenceService.findFeedItemById((long)id);
+            FeedItem feedItem = persistenceService.FindFeedItemById((long)id);
             if (feedItem == null)
             {
                 return HttpNotFound();
@@ -48,7 +48,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FeedItem feedItem = persistenceService.findFeedItemById((long)id);
+            FeedItem feedItem = persistenceService.FindFeedItemById((long)id);
             if (feedItem == null)
             {
                 return HttpNotFound();
@@ -61,7 +61,7 @@ namespace WebFeedReader.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            persistenceService.deleteFeedItemById(id);
+            persistenceService.DeleteFeedItemById(id);
             persistenceService.SaveChanges();
             return RedirectToAction("Index");
         }
