@@ -13,6 +13,8 @@ namespace WebFeedReader.Persistence
 
         IEnumerable<FeedItem> GetAllFeedItems();
 
+        IEnumerable<FeedItem> GetFeedItemsInFeed(Feed feed);
+
         Feed FindFeedById(long id);
 
         FeedItem FindFeedItemById(long id);

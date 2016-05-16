@@ -18,12 +18,18 @@ namespace WebFeedReader.Persistence
 
         public IEnumerable<Feed> GetAllFeeds()
         {
-            return context.Feeds.AsEnumerable();
+            return context.Feeds.ToList();
         }
 
         public IEnumerable<FeedItem> GetAllFeedItems()
         {
-            return context.FeedItems.Include(feedItem => feedItem.Feed).AsEnumerable();
+            return context.FeedItems.Include(feedItem => feedItem.Feed).ToList();
+        }
+
+        public IEnumerable<FeedItem> GetFeedItemsInFeed(Feed feed)
+        {
+            return context.FeedItems.Include(feedItem => feedItem.Feed)
+                          .Where(feedItem => feedItem.Feed.ID == feed.ID).ToList();
         }
 
         public Feed FindFeedById(long id)

@@ -220,6 +220,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\FeedUtils.cs" />
     <Compile Include="ViewModels\FeedCreateViewModel.cs" />
+    <Compile Include="ViewModels\MainFeedDisplayViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
