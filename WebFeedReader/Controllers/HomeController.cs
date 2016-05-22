@@ -4,18 +4,18 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebFeedReader.Models;
-using WebFeedReader.Persistence;
+using WebFeedReader.Services;
 using WebFeedReader.ViewModels;
 
 namespace WebFeedReader.Controllers
 {
     public class HomeController : Controller
     {
-        private IPersistenceService persistenceService;
+        private readonly IFeedService feedService;
 
-        public HomeController(IPersistenceService persistenceService)
+        public HomeController(IFeedService feedService)
         {
-            this.persistenceService = persistenceService;
+            this.feedService = feedService;
         }
 
         public ActionResult Index(long? selectedFeedId, long? selectedFeedItemId)
@@ -27,18 +27,18 @@ namespace WebFeedReader.Controllers
             if (selectedFeedId == null)
             {
                 selectedFeed = null;
-                filteredFeedItems = persistenceService.GetAllFeedItems();
+                filteredFeedItems = feedService.GetAllFeedItems();
             }
             else
             {
-                selectedFeed = persistenceService.FindFeedById((long)selectedFeedId);
+                selectedFeed = feedService.FindFeedById((long)selectedFeedId);
 
                 if (selectedFeed == null)
                 {
                     return HttpNotFound();
                 }
 
-                filteredFeedItems = persistenceService.GetFeedItemsInFeed(selectedFeed);
+                filteredFeedItems = feedService.GetFeedItemsInFeed(selectedFeed);
             }
 
             if (selectedFeedItemId == null)
@@ -47,7 +47,7 @@ namespace WebFeedReader.Controllers
             }
             else
             {
-                selectedFeedItem = persistenceService.FindFeedItemById((long)selectedFeedItemId);
+                selectedFeedItem = feedService.FindFeedItemById((long)selectedFeedItemId);
 
                 if (selectedFeedItem == null)
                 {
@@ -56,7 +56,7 @@ namespace WebFeedReader.Controllers
             }
 
             MainFeedDisplayViewModel vm = new MainFeedDisplayViewModel(
-                persistenceService.GetAllFeeds(),
+                feedService.GetAllFeeds(),
                 filteredFeedItems,
                 selectedFeed,
                 selectedFeedItem

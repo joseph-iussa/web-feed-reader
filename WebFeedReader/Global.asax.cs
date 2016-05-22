@@ -9,7 +9,9 @@ using System.Web.Routing;
 using SimpleInjector;
 using SimpleInjector.Integration.Web;
 using SimpleInjector.Integration.Web.Mvc;
+using WebFeedReader.Models;
 using WebFeedReader.Persistence;
+using WebFeedReader.Services;
 
 namespace WebFeedReader
 {
@@ -27,8 +29,8 @@ namespace WebFeedReader
             Container container = new Container();
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
 
-            container.Register<IPersistenceService>(
-                () => new PersistenceService(new PersistenceContext()),
+            container.Register<IFeedService>(
+                () => new FeedService(new DataRepository<Feed>(), new DataRepository<FeedItem>()),
                 Lifestyle.Scoped
             );
 

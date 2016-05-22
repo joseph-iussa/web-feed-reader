@@ -7,23 +7,23 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebFeedReader.Models;
-using WebFeedReader.Persistence;
+using WebFeedReader.Services;
 
 namespace WebFeedReader.Controllers
 {
     public class FeedItemsController : Controller
     {
-        private IPersistenceService persistenceService;
+        private readonly IFeedService feedService;
 
-        public FeedItemsController(IPersistenceService persistenceService)
+        public FeedItemsController(IFeedService feedService)
         {
-            this.persistenceService = persistenceService;
+            this.feedService = feedService;
         }
 
         // GET: FeedItems
         public ActionResult Index()
         {
-            return View(persistenceService.GetAllFeedItems());
+            return View(feedService.GetAllFeedItems());
         }
 
         // GET: FeedItems/Details/5
@@ -33,7 +33,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FeedItem feedItem = persistenceService.FindFeedItemById((long)id);
+            FeedItem feedItem = feedService.FindFeedItemById((long)id);
             if (feedItem == null)
             {
                 return HttpNotFound();
@@ -48,7 +48,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            FeedItem feedItem = persistenceService.FindFeedItemById((long)id);
+            FeedItem feedItem = feedService.FindFeedItemById((long)id);
             if (feedItem == null)
             {
                 return HttpNotFound();
@@ -61,18 +61,8 @@ namespace WebFeedReader.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            persistenceService.DeleteFeedItemById(id);
-            persistenceService.SaveChanges();
+            feedService.DeleteFeedItemById(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                persistenceService.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

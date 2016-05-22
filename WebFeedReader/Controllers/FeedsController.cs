@@ -8,7 +8,7 @@ using System.ServiceModel.Syndication;
 using System.Web;
 using System.Web.Mvc;
 using WebFeedReader.Models;
-using WebFeedReader.Persistence;
+using WebFeedReader.Services;
 using WebFeedReader.Utils;
 using WebFeedReader.ViewModels;
 
@@ -16,17 +16,17 @@ namespace WebFeedReader.Controllers
 {
     public class FeedsController : Controller
     {
-        private IPersistenceService persistenceService;
+        private readonly IFeedService feedService;
 
-        public FeedsController(IPersistenceService persistenceService)
+        public FeedsController(IFeedService feedService)
         {
-            this.persistenceService = persistenceService;
+            this.feedService = feedService;
         }
 
         // GET: Feeds
         public ActionResult Index()
         {
-            return View(persistenceService.GetAllFeeds());
+            return View(feedService.GetAllFeeds());
         }
 
         // GET: Feeds/Details/5
@@ -36,7 +36,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feed feed = persistenceService.FindFeedById((long)id);
+            Feed feed = feedService.FindFeedById((long)id);
             if (feed == null)
             {
                 return HttpNotFound();
@@ -67,8 +67,7 @@ namespace WebFeedReader.Controllers
                 return View(feedViewModel);
             }
 
-            persistenceService.AddFeed(newFeed);
-            persistenceService.SaveChanges();
+            feedService.AddFeed(newFeed);
 
             return RedirectToAction("Index");
         }
@@ -80,7 +79,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feed feed = persistenceService.FindFeedById((long)id);
+            Feed feed = feedService.FindFeedById((long)id);
             if (feed == null)
             {
                 return HttpNotFound();
@@ -96,8 +95,7 @@ namespace WebFeedReader.Controllers
         {
             if (ModelState.IsValid)
             {
-                persistenceService.ModifyFeed(feed);
-                persistenceService.SaveChanges();
+                feedService.ModifyFeed(feed);
                 return RedirectToAction("Index");
             }
             return View(feed);
@@ -110,7 +108,7 @@ namespace WebFeedReader.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Feed feed = persistenceService.FindFeedById((long)id);
+            Feed feed = feedService.FindFeedById((long)id);
             if (feed == null)
             {
                 return HttpNotFound();
@@ -123,18 +121,8 @@ namespace WebFeedReader.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            persistenceService.DeleteFeedById(id);
-            persistenceService.SaveChanges();
+            feedService.DeleteFeedById(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                persistenceService.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
