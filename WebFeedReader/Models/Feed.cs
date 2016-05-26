@@ -19,6 +19,9 @@ namespace WebFeedReader.Models
         [StringLength(4000)]
         public string Url { get; set; }
 
+        [Required]
+        public DateTime LastUpdated { get; set; }
+
         public virtual List<FeedItem> FeedItems { get; set; }
 
         public Feed()

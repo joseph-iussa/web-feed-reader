@@ -1,14 +1,26 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq.Expressions;
 
-public struct OrderByDescription<T> where T : class
+namespace WebFeedReader.Persistence
 {
-    public readonly Expression<Func<T, object>> OrderFieldSelector;
-    public readonly bool OrderAscending;
-
-    public OrderByDescription(Expression<Func<T, object>> OrderFieldSelector, bool OrderAscending)
+    public struct OrderByDescription<T> where T : class
     {
-        this.OrderFieldSelector = OrderFieldSelector;
-        this.OrderAscending = OrderAscending;
+        public readonly Expression<Func<T, object>> OrderFieldSelector;
+        public readonly ListSortDirection OrderDirection;
+
+        public OrderByDescription(
+            Expression<Func<T, object>> OrderFieldSelector, ListSortDirection OrderDirection)
+        {
+            this.OrderFieldSelector = OrderFieldSelector;
+            this.OrderDirection = OrderDirection;
+        }
+
+        // Convenience method.
+        public static OrderByDescription<M> Ord<M>(
+            Expression<Func<M, object>> OrderFieldSelector, ListSortDirection OrderDirection) where M : class
+        {
+            return new OrderByDescription<M>(OrderFieldSelector, OrderDirection);
+        }
     }
 }

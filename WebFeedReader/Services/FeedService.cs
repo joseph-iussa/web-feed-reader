@@ -24,15 +24,18 @@ namespace WebFeedReader.Services
             return feedRepo.GetList();
         }
 
-        public IList<FeedItem> GetAllFeedItems()
+        public IList<FeedItem> GetAllFeedItems(params OrderByDescription<FeedItem>[] orderByParams)
         {
-            return feedItemRepo.GetList(navigationProperties: feedItemToFeedNavProp);
+            return feedItemRepo.GetList(
+                orderBy: orderByParams,
+                navigationProperties: feedItemToFeedNavProp);
         }
 
-        public IList<FeedItem> GetFeedItemsInFeed(Feed feed)
+        public IList<FeedItem> GetFeedItemsInFeed(Feed feed, params OrderByDescription<FeedItem>[] orderByParams)
         {
             return feedItemRepo.GetList(
                 filterBy: feedItem => feedItem.Feed.ID == feed.ID,
+                orderBy: orderByParams,
                 navigationProperties: feedItemToFeedNavProp);
         }
 

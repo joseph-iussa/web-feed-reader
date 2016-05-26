@@ -18,13 +18,15 @@ namespace WebFeedReader.Utils
 
             newFeed.Title = string.IsNullOrEmpty(feedData.Data.Title?.Text) ? feedData.Url : feedData.Data.Title.Text;
             newFeed.Url = feedData.Url;
+            newFeed.LastUpdated = feedData.Data.LastUpdatedTime.UtcDateTime;
 
             foreach (SyndicationItem newFeedDataItem in feedData.Data.Items)
             {
                 FeedItem newFeedItem = new FeedItem
                 {
                     Title = newFeedDataItem.Title?.Text ?? "No Title",
-                    Content = newFeedDataItem.Content?.ToString() ?? newFeedDataItem.Summary?.Text ?? "No Content"
+                    Content = newFeedDataItem.Content?.ToString() ?? newFeedDataItem.Summary?.Text ?? "No Content",
+                    PublishedOn = newFeedDataItem.PublishDate.UtcDateTime
                 };
                 newFeed.FeedItems.Add(newFeedItem);
             }

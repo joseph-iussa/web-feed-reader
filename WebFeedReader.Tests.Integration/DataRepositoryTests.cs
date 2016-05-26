@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -41,14 +42,14 @@ namespace WebFeedReader.Tests.Integration
             // Entities in order for an ordering of Field1 ASC, Field2 DESC, Field3 ASC.
             List<TestEntity> entitiesInOrder = new List<TestEntity>
             {
-                new TestEntity { Name = "Entity One", Field1 = "1", Field2 = "d", Field3 = "1" },
-                new TestEntity { Name = "Entity Two", Field1 = "1", Field2 = "c", Field3 = "1" },
-                new TestEntity { Name = "Entity Three", Field1 = "1", Field2 = "b", Field3 = "1" },
-                new TestEntity { Name = "Entity Four", Field1 = "1", Field2 = "a", Field3 = "1" },
-                new TestEntity { Name = "Entity Five", Field1 = "2", Field2 = "y", Field3 = "A" },
-                new TestEntity { Name = "Entity Six", Field1 = "2", Field2 = "y", Field3 = "B" },
-                new TestEntity { Name = "Entity Seven", Field1 = "2", Field2 = "x", Field3 = "A" },
-                new TestEntity { Name = "Entity Eight", Field1 = "2", Field2 = "x", Field3 = "B" }
+                new TestEntity { Name = "Entity One", Field1 = "1", Field2 = "d", Field3 = 1 },
+                new TestEntity { Name = "Entity Two", Field1 = "1", Field2 = "c", Field3 = 1 },
+                new TestEntity { Name = "Entity Three", Field1 = "1", Field2 = "b", Field3 = 1 },
+                new TestEntity { Name = "Entity Four", Field1 = "1", Field2 = "a", Field3 = 1 },
+                new TestEntity { Name = "Entity Five", Field1 = "2", Field2 = "y", Field3 = 42 },
+                new TestEntity { Name = "Entity Six", Field1 = "2", Field2 = "y", Field3 = 43 },
+                new TestEntity { Name = "Entity Seven", Field1 = "2", Field2 = "x", Field3 = 42 },
+                new TestEntity { Name = "Entity Eight", Field1 = "2", Field2 = "x", Field3 = 43 }
             };
 
             // Insert entities into database in random order.
@@ -59,9 +60,9 @@ namespace WebFeedReader.Tests.Integration
 
             IList<TestEntity> result = repo.GetList(orderBy: new OrderByDescription<TestEntity>[]
             {
-                new OrderByDescription<TestEntity>(e => e.Field1, true),
-                new OrderByDescription<TestEntity>(e => e.Field2, false),
-                new OrderByDescription<TestEntity>(e => e.Field3, true),
+                new OrderByDescription<TestEntity>(e => e.Field1, ListSortDirection.Ascending),
+                new OrderByDescription<TestEntity>(e => e.Field2, ListSortDirection.Descending),
+                new OrderByDescription<TestEntity>(e => e.Field3, ListSortDirection.Ascending),
             });
 
             Assert.That(entitiesInOrder.SequenceEqual(result, testEntityEqComp),

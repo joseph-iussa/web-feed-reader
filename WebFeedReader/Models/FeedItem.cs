@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebFeedReader.Models
 {
@@ -15,5 +16,8 @@ namespace WebFeedReader.Models
 
         [Required]
         public string Content { get; set; }
+
+        [Required]
+        public DateTime PublishedOn { get; set; }
     }
 }

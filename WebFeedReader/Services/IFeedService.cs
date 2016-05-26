@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using WebFeedReader.Models;
+using WebFeedReader.Persistence;
 
 namespace WebFeedReader.Services
 {
@@ -11,9 +13,9 @@ namespace WebFeedReader.Services
     {
         IList<Feed> GetAllFeeds();
 
-        IList<FeedItem> GetAllFeedItems();
+        IList<FeedItem> GetAllFeedItems(params OrderByDescription<FeedItem>[] orderByParams);
 
-        IList<FeedItem> GetFeedItemsInFeed(Feed feed);
+        IList<FeedItem> GetFeedItemsInFeed(Feed feed, params OrderByDescription<FeedItem>[] orderByParams);
 
         Feed FindFeedById(long id);
 

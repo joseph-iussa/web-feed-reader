@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebFeedReader.Models;
 using WebFeedReader.Services;
 using WebFeedReader.ViewModels;
+using static WebFeedReader.Persistence.OrderByDescription<object>;
 
 namespace WebFeedReader.Controllers
 {
@@ -27,7 +29,8 @@ namespace WebFeedReader.Controllers
             if (selectedFeedId == null)
             {
                 selectedFeed = null;
-                filteredFeedItems = feedService.GetAllFeedItems();
+                filteredFeedItems = feedService.GetAllFeedItems(
+                    Ord<FeedItem>(fi => fi.PublishedOn, ListSortDirection.Descending));
             }
             else
             {
@@ -38,7 +41,8 @@ namespace WebFeedReader.Controllers
                     return HttpNotFound();
                 }
 
-                filteredFeedItems = feedService.GetFeedItemsInFeed(selectedFeed);
+                filteredFeedItems = feedService.GetFeedItemsInFeed(
+                    selectedFeed, Ord<FeedItem>(fi => fi.PublishedOn, ListSortDirection.Descending));
             }
 
             if (selectedFeedItemId == null)

@@ -196,6 +196,10 @@
     <Compile Include="Controllers\FeedsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Migrations\201605251236379_FeedAndFeedItemPublishedDateTime.cs" />
+    <Compile Include="Migrations\201605251236379_FeedAndFeedItemPublishedDateTime.Designer.cs">
+      <DependentUpon>201605251236379_FeedAndFeedItemPublishedDateTime.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\FeedService.cs" />
     <Compile Include="Services\IFeedService.cs" />
     <Compile Include="Global.asax.cs">
@@ -317,6 +321,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201603261326308_BasicFeedAttrs.resx">
       <DependentUpon>201603261326308_BasicFeedAttrs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605251236379_FeedAndFeedItemPublishedDateTime.resx">
+      <DependentUpon>201605251236379_FeedAndFeedItemPublishedDateTime.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

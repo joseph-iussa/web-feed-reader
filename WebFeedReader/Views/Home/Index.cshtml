@@ -8,7 +8,7 @@
 }
 
 <div class="row">
-    <div class="col-lg-4">
+    <div class="col-lg-2">
         <h2>Feeds</h2>
         <ul>
             <li>@Html.ActionLink("All Feeds", "Index")</li>
@@ -22,22 +22,34 @@
             }
         </ul>
     </div>
-    <div class="col-lg-4">
-        <ul>
+    <div class="col-lg-5">
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Published</th>
+                </tr>
+            </thead>
             @foreach (FeedItem feedItem in Model.FilteredFeedItems)
             {
-                <li>
-                    @Html.ActionLink(feedItem.Title, "Index",
-                    new { selectedFeedId = Model.SelectedFeed?.ID, selectedFeedItemId = feedItem.ID })
-                </li>
+                <tr>
+                    <td>
+                        @Html.ActionLink(feedItem.Title, "Index",
+                            new { selectedFeedId = Model.SelectedFeed?.ID, selectedFeedItemId = feedItem.ID })
+                    </td>
+                    <td>@Html.DisplayFor(_ => feedItem.PublishedOn)</td>
+                </tr>
+
             }
             @if (!Model.FilteredFeedItems.Any())
             {
-                <li>There are no feed entries to display</li>
+                <tr>
+                    <td colspan="2">There are no feed entries to display</td>
+                </tr>
             }
-        </ul>
+        </table>
     </div>
-    <div class="col-lg-4">
+    <div class="col-lg-5">
         @if (Model.SelectedFeedItem != null)
         {
             <div class="feed-item-display">
