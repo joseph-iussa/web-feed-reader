@@ -8,21 +8,44 @@
 }
 
 <div class="row">
-    <div class="col-lg-2">
-        <h2>Feeds</h2>
-        <ul>
-            <li>@Html.ActionLink("All Feeds", "Index")</li>
+    <section class="col-lg-2">
+        <h1>Feeds</h1>
+        <div class="btn-group-vertical" style="width: 100%">
+            @{
+                var allFeedsLinkClasses = "btn btn-block btn-default";
+                if (Model.SelectedFeed == null)
+                {
+                    allFeedsLinkClasses += " active";
+                }
+            }
+            @Html.ActionLink("All Feeds", "Index", null,
+                new { @class = allFeedsLinkClasses, style = "text-align: left", role = "button" })
             @foreach (Feed feed in Model.Feeds)
             {
-                <li>@Html.ActionLink(feed.Title, "Index", new { selectedFeedId = feed.ID })</li>
+                var feedLinkClasses = "btn btn-block btn-default dropdown-toggle";
+                if (Model.SelectedFeed != null && feed.ID == Model.SelectedFeed.ID)
+                {
+                    feedLinkClasses += " active";
+                }
+                <div class="btn-group">
+                    <button type="button" class="@feedLinkClasses" style="text-align: left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span style="display:inline-block; max-width: 90%; overflow-x:hidden">@feed.Title</span>
+                        <span class="caret pull-right"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li>@Html.ActionLink("Filter By", "Index", new { selectedFeedId = feed.ID })</li>
+                        <li>@Html.ActionLink("Properties", "Edit", "Feeds", new { id = feed.ID }, null)</li>
+                        <li>@Html.ActionLink("Delete", "Delete", "Feeds", new { id = feed.ID }, null)</li>
+                    </ul>
+                </div>
             }
             @if (!Model.Feeds.Any())
             {
-                <li>There are no Feeds</li>
+                <span>There are no Feeds</span>
             }
-        </ul>
-    </div>
-    <div class="col-lg-5">
+        </div>
+    </section>
+    <section class="col-lg-5">
         <table border="1">
             <thead>
                 <tr>
@@ -48,16 +71,16 @@
                 </tr>
             }
         </table>
-    </div>
-    <div class="col-lg-5">
+    </section>
+    <section class="col-lg-5">
         @if (Model.SelectedFeedItem != null)
         {
             <div class="feed-item-display">
-                <h2>@Model.SelectedFeedItem.Title</h2>
+                <h1>@Model.SelectedFeedItem.Title</h1>
                 <div class="feed-item-content">
                     @Html.Raw(Model.SelectedFeedItem.Content)
                 </div>
             </div>
         }
-    </div>
+    </section>
 </div>
