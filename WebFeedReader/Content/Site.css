@@ -1,16 +1,11 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
-}
-
-/* Set padding to keep content from hitting the edges */
+﻿/* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
+/* Override the default bootstrap behavior where horizontal description lists
+   will truncate terms that are too long to fit in the left column
 */
 .dl-horizontal dt {
     white-space: normal;
@@ -21,4 +16,97 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+
+body > footer {
+    padding: 10px;
+}
+
+/* Main page layout */
+html.main-page,
+html.main-page body {
+    height: 100%;
+}
+
+html.main-page body {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    overflow-y: hidden;
+}
+
+html.main-page body > header,
+html.main-page body > footer {
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+html.main-page .body-content {
+    display: flex;
+    overflow-y: hidden;
+    padding: 0;
+}
+
+html.main-page .body-content > * {
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+
+html.main-page .body-content > .vertical-no-scroll {
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+}
+
+html.main-page .body-content .vertical-scroll {
+    overflow-y: auto;
+}
+
+html.main-page .body-content > #feed-list {
+    flex: 1 1 15%;
+}
+
+html.main-page .body-content > #feed-item-list {
+    flex: 1 1 40%;
+}
+
+html.main-page .body-content > #feed-item-display {
+    flex: 1 1 45%;
+}
+
+/* Feed item list styling */
+#feed-item-list .feed-item {
+    padding: 10px;
+}
+
+#feed-item-list .feed-item:nth-child(odd) {
+    background-color: #f2f2f2;
+}
+
+#feed-item-list .feed-item-title a {
+    color: black;
+    font-weight: bold;
+}
+
+#feed-item-list .feed-item-meta {
+    display: flex;
+}
+
+#feed-item-list .feed-item-feedtitle {
+    flex: auto;
+}
+
+#feed-item-list .feed-item-published {
+    margin-left: 5px;
+    display: flex;
+}
+
+#feed-item-list .feed-item-published div {
+    align-self: flex-end;
+}
+
+/* Feed item display styling */
+#feed-item-display > * {
+    padding: 10px;
 }

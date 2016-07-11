@@ -5,22 +5,21 @@
 
 @{
     ViewBag.Title = "All Feeds";
+    ViewBag.HtmlTagClass = "main-page";
 }
 
-<div class="row">
-    <section class="col-lg-2">
-        <h1>Feeds</h1>
-        <div class="btn-group-vertical" style="width: 100%">
-            @{
-                var allFeedsLinkClasses = "btn btn-block btn-default";
-                if (Model.SelectedFeed == null)
-                {
-                    allFeedsLinkClasses += " active";
-                }
+<section id="feed-list">
+    <div class="btn-group-vertical" style="width: 100%">
+        @{
+            var allFeedsLinkClasses = "btn btn-block btn-default";
+            if (Model.SelectedFeed == null)
+            {
+                allFeedsLinkClasses += " active";
             }
-            @Html.ActionLink("All Feeds", "Index", null,
+        }
+        @Html.ActionLink("All Feeds", "Index", null,
                 new { @class = allFeedsLinkClasses, style = "text-align: left", role = "button" })
-            @foreach (Feed feed in Model.Feeds)
+        @foreach (Feed feed in Model.Feeds)
             {
                 var feedLinkClasses = "btn btn-block btn-default dropdown-toggle";
                 if (Model.SelectedFeed != null && feed.ID == Model.SelectedFeed.ID)
@@ -38,49 +37,43 @@
                         <li>@Html.ActionLink("Delete", "Delete", "Feeds", new { id = feed.ID }, null)</li>
                     </ul>
                 </div>
-            }
-            @if (!Model.Feeds.Any())
+        }
+        @if (!Model.Feeds.Any())
             {
-                <span>There are no Feeds</span>
-            }
-        </div>
-    </section>
-    <section class="col-lg-5">
-        <table border="1">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Published</th>
-                </tr>
-            </thead>
-            @foreach (FeedItem feedItem in Model.FilteredFeedItems)
-            {
-                <tr>
-                    <td>
-                        @Html.ActionLink(feedItem.Title, "Index",
-                            new { selectedFeedId = Model.SelectedFeed?.ID, selectedFeedItemId = feedItem.ID })
-                    </td>
-                    <td>@Html.DisplayFor(_ => feedItem.PublishedOn)</td>
-                </tr>
-
-            }
-            @if (!Model.FilteredFeedItems.Any())
-            {
-                <tr>
-                    <td colspan="2">There are no feed entries to display</td>
-                </tr>
-            }
-        </table>
-    </section>
-    <section class="col-lg-5">
-        @if (Model.SelectedFeedItem != null)
-        {
-            <div class="feed-item-display">
-                <h1>@Model.SelectedFeedItem.Title</h1>
-                <div class="feed-item-content">
-                    @Html.Raw(Model.SelectedFeedItem.Content)
+            <span>There are no Feeds</span>
+        }
+    </div>
+</section>
+<section id="feed-item-list">
+    @foreach (FeedItem feedItem in Model.FilteredFeedItems)
+    {
+        <div class="feed-item">
+            <div class="feed-item-title">
+                @Html.ActionLink(feedItem.Title, "Index",
+                new { selectedFeedId = Model.SelectedFeed?.ID, selectedFeedItemId = feedItem.ID })
+            </div>
+            <div class="feed-item-meta">
+                <div class="feed-item-feedtitle">
+                    @feedItem.Feed.Title
+                </div>
+                <div class="feed-item-published">
+                    <div>@feedItem.PublishedOn.ToShortDateString()</div>
                 </div>
             </div>
-        }
-    </section>
-</div>
+        </div>
+
+    }
+    @if (!Model.FilteredFeedItems.Any())
+    {
+        <p>There are no feed entries to display</p>
+    }
+</section>
+<section id="feed-item-display" class="vertical-no-scroll">
+    @if (Model.SelectedFeedItem != null)
+    {
+        <h1>@Model.SelectedFeedItem.Title</h1>
+        <div class="feed-item-content vertical-scroll">
+            @Html.Raw(Model.SelectedFeedItem.Content)
+        </div>
+    }
+</section>
